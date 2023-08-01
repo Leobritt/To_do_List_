@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_to_do_list/components/todo_form_field.dart';
+import 'package:flutter_application_to_do_list/components/todo_list.dart';
 
 import '../components/button.dart';
 
@@ -30,17 +31,39 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
-          children: [FormToDo(controller: _controllerTextFormField)],
+          children: [
+            FormToDo(controller: _controllerTextFormField),
+            Flexible(
+              child: ListTodo(todoList: todoList),
+            ),
+          ],
         ),
       ),
-      floatingActionButton: Button(
-        icon: Icons.add,
-        onPressed: () {
-          if (_controllerTextFormField.text.isNotEmpty) {
-            todoList.add(_controllerTextFormField.text);
-            _controllerTextFormField.clear();
-          }
-        },
+      floatingActionButton: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Button(
+            icon: Icons.add,
+            onPressed: () {
+              if (_controllerTextFormField.text.isNotEmpty) {
+                setState(() {
+                  todoList.add(_controllerTextFormField.text);
+                });
+                _controllerTextFormField.clear();
+              }
+            },
+          ),
+          Button(
+            icon: Icons.remove,
+            onPressed: () {
+              setState(() {
+                todoList = [];
+              });
+              _controllerTextFormField.clear();
+            },
+          ),
+        ],
       ),
     );
   }
